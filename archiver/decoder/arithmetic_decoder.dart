@@ -24,7 +24,7 @@ class ArithmeticDecoder {
     final aux = (((_value - _low + 1) * distribution.totalFrequences - 1) / range).floor();
     var i = 0;
 
-    while (distribution.getCumulativeFrequency(i + 1) <= aux && i < ALPHABET_POWER) i++;
+    while (distribution.getCumulativeFrequency(i + 1) <= aux) i++;
     final x = i;
     _high = _low + (range * distribution.getCumulativeFrequency(x + 1) / distribution.totalFrequences).floor() - 1;
     _low = _low + (range * distribution.getCumulativeFrequency(x) / distribution.totalFrequences).floor();

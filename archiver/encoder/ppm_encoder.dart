@@ -27,7 +27,9 @@ class PpmEncoder extends PpmObject {
     // Encodes all symbols
     for (var x in data) {
       _encodeX(x);
-      _uniformDistribution.resetFrequency(x);
+      if (_uniformDistribution.getFrequency(x) > 0) {
+        _uniformDistribution.resetFrequency(x);
+      }
       incrementFrequency(x);
       updateCurrentContext(x);
     }

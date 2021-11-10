@@ -29,7 +29,9 @@ class PpmDecoder extends PpmObject {
     _decoder.prepare();
     for (var i = 1; i <= n; i++) {
       final x = _decodeX();
-      _uniformDistribution.resetFrequency(x);
+      if (_uniformDistribution.getFrequency(x) > 0) {
+        _uniformDistribution.resetFrequency(x);
+      }
       output.writeByte(x);
       incrementFrequency(x);
       updateCurrentContext(x);

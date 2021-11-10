@@ -54,18 +54,13 @@ Entropy calculateEntropy(HilbertMooreDistribution distribution) {
           final xx = yy.conditionalDistributions?[y];
           final pY_Z = freqY / (yy.totalFrequences - yy.getFrequency(ESC_SYMBOL));
           if (pY_Z > 0) {
-            hXX += (log(pY_Z) / log(2)) * pY_Z * freqZ / (distribution.totalFrequences - distribution.getFrequency(ESC_SYMBOL));
+            hXX += (log(pY_Z) / log(2)) * freqY / (distribution.totalFrequences - distribution.getFrequency(ESC_SYMBOL));
             if (xx != null) {
               for (var x = 0; x < ALPHABET_POWER; x++) {
                 final freqX = xx.getFrequency(x);
                 final pX_YZ = freqX / (xx.totalFrequences - xx.getFrequency(ESC_SYMBOL));
                 if (pX_YZ > 0) {
-                  hXXX += (log(pX_YZ) / log(2)) *
-                      pX_YZ *
-                      freqZ /
-                      (distribution.totalFrequences - distribution.getFrequency(ESC_SYMBOL)) *
-                      freqY /
-                      (yy.totalFrequences - yy.getFrequency(ESC_SYMBOL));
+                  hXXX += (log(pX_YZ) / log(2)) * freqX / (distribution.totalFrequences - distribution.getFrequency(ESC_SYMBOL));
                 }
               }
             }

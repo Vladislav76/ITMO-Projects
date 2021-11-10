@@ -12,7 +12,7 @@ void main(List<String> args) {
   }
 
   try {
-    final testNames = ['input', 'bib', 'book1', 'book2', 'geo', 'news', 'obj1', 'obj2', 'paper1', 'paper2', 'pic', 'progc', 'progl', 'progp', 'trans'];
+    final testNames = ['bib', 'book1', 'book2', 'geo', 'news', 'obj1', 'obj2', 'paper1', 'paper2', 'pic', 'progc', 'progl', 'progp', 'trans'];
     final statistics = <Statistics>[];
     for (var testName in testNames) {
       // Encoding
