@@ -28,7 +28,7 @@ void main(List<String> args) {
       try {
         File(outFN).writeAsBytesSync(output.toList());
       } catch (_) {
-        print('Unable to save output file');
+        print('Unable to save output file $outFN');
       }
     } catch (e) {
       print('No such file! $e');
