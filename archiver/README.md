@@ -12,5 +12,5 @@ bin\decoder <path to encoded file> [path to output]
 
 ## Запуск тестового стенда
 ```
-bin\test [path to output CSV file] 
+bin\test <path to output CSV file> 
 ``` 
