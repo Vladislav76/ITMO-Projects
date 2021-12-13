@@ -1,0 +1,14 @@
+# ninja log v5
+2	476	6610281504663513	CMakeFiles/jpg_encoder.dir/jpegenc.cpp.obj	a322d5bc23b0760c
+2	106	6610285915966724	jpg_encoder.exe	c9bb8172d4553e24
+2	363	6610303795566338	jpg_encoder.exe	aacf7c1a32b55c41
+2	536	6610303890056740	CMakeFiles/jpg_encoder.dir/jpegenc.cpp.obj	a322d5bc23b0760c
+536	973	6610303894356736	jpg_encoder.exe	aacf7c1a32b55c41
+2	462	6610373887755533	CMakeFiles/jpg_encoder.dir/jpegenc.cpp.obj	a322d5bc23b0760c
+463	808	6610373891155619	jpg_encoder.exe	aacf7c1a32b55c41
+3	527	6610374150278581	CMakeFiles/jpg_encoder.dir/jpegenc.cpp.obj	a322d5bc23b0760c
+527	913	6610374154038667	jpg_encoder.exe	aacf7c1a32b55c41
+2	417	6610390379399084	CMakeFiles/jpg_encoder.dir/jpegenc.cpp.obj	a322d5bc23b0760c
+417	763	6610390382811538	jpg_encoder.exe	aacf7c1a32b55c41
+1	710	6611247707434756	CMakeFiles/jpg_encoder.dir/jpegenc.cpp.obj	a322d5bc23b0760c
+710	1352	6611247713796034	jpg_encoder.exe	aacf7c1a32b55c41

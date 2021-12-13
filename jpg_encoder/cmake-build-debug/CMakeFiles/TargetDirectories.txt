@@ -1,0 +1,3 @@
+V:/Workspace/ITMO-Projects/jpg_encoder/cmake-build-debug/CMakeFiles/jpg_encoder.dir
+V:/Workspace/ITMO-Projects/jpg_encoder/cmake-build-debug/CMakeFiles/edit_cache.dir
+V:/Workspace/ITMO-Projects/jpg_encoder/cmake-build-debug/CMakeFiles/rebuild_cache.dir
