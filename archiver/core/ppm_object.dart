@@ -2,8 +2,11 @@ import 'constants.dart';
 import 'distributions.dart';
 
 class PpmObject {
+  final int D;
   final currentContext = <int>[];
-  final unconditionalDistribution = HilbertMooreDistribution(hasConditionalDistributions: D >= 1)..incrementFrequency(ESC_SYMBOL);
+  late final unconditionalDistribution = HilbertMooreDistribution(hasConditionalDistributions: D >= 1)..incrementFrequency(ESC_SYMBOL);
+
+  PpmObject(this.D);
 
   void updateCurrentContext(int x) {
     if (D >= 1) {

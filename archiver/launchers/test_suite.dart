@@ -18,14 +18,14 @@ void main(List<String> args) {
       // Encoding
       final encodingOutput = ByteOutputStorage();
       final initialData = File('input/$testName').readAsBytesSync();
-      final encoder = PpmEncoder(data: initialData, output: encodingOutput);
-      encoder.encode();
+      final encoder = PpmEncoder(D: 3, data: initialData, output: encodingOutput);
+      encoder.compress();
       final encodedData = encodingOutput.toList();
 
       // Decoding
       final decodingOutput = ByteOutputStorage();
-      final decoder = PpmDecoder(input: ByteInputStorage(data: encodedData), output: decodingOutput);
-      decoder.decode();
+      final decoder = PpmDecoder(D: 3, input: ByteInputStorage(data: encodedData), output: decodingOutput);
+      decoder.decompress();
       final decodedData = decodingOutput.toList();
       File('output/$testName').writeAsBytesSync(decodedData);
 

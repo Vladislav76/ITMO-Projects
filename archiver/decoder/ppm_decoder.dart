@@ -15,9 +15,11 @@ class PpmDecoder extends PpmObject {
   PpmDecoder({
     required this.input,
     required this.output,
-  }) : _decoder = ArithmeticDecoder(input: input);
+    required int D,
+  })  : _decoder = ArithmeticDecoder(input: input),
+        super(D);
 
-  void decode() {
+  void decompress() {
     // Read data size from first 8 bytes
     num n = 0;
     var exp = pow(256, 7);

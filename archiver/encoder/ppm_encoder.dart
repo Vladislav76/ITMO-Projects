@@ -15,9 +15,11 @@ class PpmEncoder extends PpmObject {
   PpmEncoder({
     required this.output,
     required this.data,
-  }) : _encoder = ArithmeticEncoder(output: output);
+    required int D,
+  })  : _encoder = ArithmeticEncoder(output: output),
+        super(D);
 
-  void encode() {
+  void compress() {
     // Write data size in first 8 bytes
     final n = data.length;
     for (var i = 7; i >= 0; i--) {

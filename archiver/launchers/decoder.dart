@@ -17,10 +17,11 @@ void main(List<String> args) {
       final data = File(inFN).readAsBytesSync();
       final output = ByteOutputStorage();
       final decoder = PpmDecoder(
+        D: 3,
         input: ByteInputStorage(data: data),
         output: output,
       );
-      decoder.decode();
+      decoder.decompress();
       if (outFN == null) {
         outFN = inFN;
         outFN = outFN.substring(0, outFN.length - 4);
