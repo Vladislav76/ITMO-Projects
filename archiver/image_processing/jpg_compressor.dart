@@ -29,7 +29,7 @@ class JpgCompressor {
 
       // Write non-nullable DC-Difference
       if (dcDiff != 0) {
-        final processedDcDiff = ((dcDiff > 0 ? dcDiff : dcDiff - 1).toUnsigned(16) & (1 << len) - 1);
+        final processedDcDiff = dcDiff > 0 ? dcDiff : (pow(2, len) - dcDiff.abs() - 1).toInt();
         writeStringAsBinary(processedDcDiff.toRadixString(2).padLeft(len, '0'), binaryAcDc);
       }
 
