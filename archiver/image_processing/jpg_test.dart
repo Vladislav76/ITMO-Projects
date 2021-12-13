@@ -26,16 +26,18 @@ Future<void> main(List<String> args) async {
   final originalSize = [0, 0];
   final compressedSize = [0, 0];
   final passedSize = [0, 0];
+  final testCompressedSize = [List.filled(TEST_FILE_NAMES.length, 0), List.filled(TEST_FILE_NAMES.length, 0)];
   for (var i = 0; i < qfactors.length; i++) {
     var compressedSizeSum = 0;
     var originalSizeSum = 0;
-    for (var testName in TEST_FILE_NAMES) {
-      final jpgFileName = '$testName${qfactors[i]}.jpg';
+    for (var testNum = 0; testNum < TEST_FILE_NAMES.length; testNum++) {
+      final jpgFileName = '${TEST_FILE_NAMES[testNum]}${qfactors[i]}.jpg';
       final jpgPath = 'input/jpg${qfactors[i]}/$jpgFileName';
       final originalData = File(jpgPath).readAsBytesSync();
       originalSizeSum += originalData.length;
       final compressedData = await launchCompression(jpgPath, true);
       compressedSizeSum += compressedData.length;
+      testCompressedSize[i][testNum] = compressedData.length;
       final endData = await launchDecompression(jpgFileName + '_compressed');
       File(jpgFileName).delete();
       if (originalData.length == endData.length) {
@@ -51,7 +53,17 @@ Future<void> main(List<String> args) async {
     compressedSize[i] = compressedSizeSum;
   }
 
-  print('* * * TEST LAUNCH RESULTS * * *');
+  print('* * * TEST LAUNCH DETAILS * * *');
+  for (var testNum = 0; testNum < TEST_FILE_NAMES.length; testNum++) {
+    stdout.write(TEST_FILE_NAMES[testNum]);
+    for (var i = 0; i < qfactors.length; i++) {
+      stdout.write(',');
+      stdout.write(testCompressedSize[i][testNum]);
+    }
+    stdout.write('\n');
+  }
+  print('');
+  print('* * * TEST LAUNCH SUMMARY * * *');
   print('Quality factor | Passed tests | Original bytes | Compressed bytes | Compression percent');
   for (var i = 0; i < qfactors.length; i++) {
     print('${qfactors[i].toString().padRight(14, ' ')} | ' +
