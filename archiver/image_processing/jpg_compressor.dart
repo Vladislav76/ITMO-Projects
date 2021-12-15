@@ -6,6 +6,14 @@ import 'utils.dart';
 
 import '../core/byte_storage.dart';
 import '../encoder/ppm_encoder.dart';
+import 'zigzags.dart';
+
+class AcFrequency {
+  final int index;
+  int count;
+
+  AcFrequency(this.index, this.count);
+}
 
 class JpgCompressor {
   static ProcessedJpgData compress(JpgData data) {
@@ -14,6 +22,33 @@ class JpgCompressor {
     final binaryAcDc = ByteOutputStorage();
 
     var previousDC = 0;
+
+    final acFreqs = List.generate(63, (i) => AcFrequency(i + 1, 0));
+    for (var table in data.tables) {
+      for (var k = 0; k < 63; k++) {
+        for (var i = 0; i <= 7; i++) {
+          for (var j = (i == 0) ? 1 : 0; j <= 7; j++) {
+            if (table[i][j] != 0) acFreqs[i * 8 + j - 1].count++;
+          }
+        }
+      }
+    }
+    acFreqs.sort((f1, f2) => f1.count < f2.count
+        ? 1
+        : f1.count == f2.count
+            ? 0
+            : -1);
+
+    var zz = acFreqs.map((e) => e.index).toList();
+    var zigzagNumber = zigzags.indexWhere((e) {
+      for (var k = 0; k < 63; k++) {
+        if (e[k] != zz[k]) return false;
+      }
+      return true;
+    });
+    if (zigzagNumber == -1) zigzagNumber = 0;
+    final zigzag = zigzags[zigzagNumber];
+
     for (var table in data.tables) {
       // Calculate DC-difference
       final dc = table[0][0];
@@ -35,29 +70,27 @@ class JpgCompressor {
 
       // Process ACs
       var run = 0;
-      for (var i = 0; i <= 7; i++) {
-        for (var j = (i == 0) ? 1 : 0; j <= 7; j++) {
-          final ac = table[i][j];
-          if (ac == 0) {
-            run++;
-          } else {
-            // Write zero count before AC
-            if (run > 15) {
-              acLength.writeByte((run ~/ 16) << 4);
-              run %= 16;
-            }
-            writeStringAsBinary(run.toRadixString(2).padLeft(4, '0'), acLength);
-
-            // Write AC length
-            final len = getBinaryCodeLength(ac.abs());
-            writeStringAsBinary(len.toRadixString(2).padLeft(4, '0'), acLength);
-
-            // Write AC
-            final processedAc = ac > 0 ? ac : (pow(2, len) - ac.abs() - 1).toInt();
-            writeStringAsBinary(processedAc.toRadixString(2).padLeft(len, '0'), binaryAcDc);
-
-            run = 0;
+      for (var k = 0; k < 63; k++) {
+        final ac = table[zigzag[k] ~/ 8][zigzag[k] % 8];
+        if (ac == 0) {
+          run++;
+        } else {
+          // Write zero count before AC
+          if (run > 15) {
+            acLength.writeByte((run ~/ 16) << 4);
+            run %= 16;
           }
+          writeStringAsBinary(run.toRadixString(2).padLeft(4, '0'), acLength);
+
+          // Write AC length
+          final len = getBinaryCodeLength(ac.abs());
+          writeStringAsBinary(len.toRadixString(2).padLeft(4, '0'), acLength);
+
+          // Write AC
+          final processedAc = ac > 0 ? ac : (pow(2, len) - ac.abs() - 1).toInt();
+          writeStringAsBinary(processedAc.toRadixString(2).padLeft(len, '0'), binaryAcDc);
+
+          run = 0;
         }
       }
       // End of block
@@ -83,6 +116,7 @@ class JpgCompressor {
       acCompressedData.toList(),
       binaryAcDc.toList(),
       data,
+      zigzagNumber,
     );
   }
 }

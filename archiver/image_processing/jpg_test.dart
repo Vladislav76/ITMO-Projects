@@ -38,7 +38,7 @@ Future<void> main(List<String> args) async {
       final compressedData = await launchCompression(jpgPath, true);
       compressedSizeSum += compressedData.length;
       testCompressedSize[i][testNum] = compressedData.length;
-      final endData = await launchDecompression(jpgFileName + '_compressed');
+      final endData = await launchDecompression(jpgFileName + '_compressed', null);
       File(jpgFileName).delete();
       if (originalData.length == endData.length) {
         var k = 0;

@@ -7,6 +7,7 @@ import '../encoder/ppm_encoder.dart';
 import '../core/byte_storage.dart';
 import 'models.dart';
 import 'utils.dart';
+import 'zigzags.dart';
 
 class JpgDecompressor {
   static JpgData decompress(Uint8List data) {
@@ -18,7 +19,8 @@ class JpgDecompressor {
       qualityFactor: data[5],
       tables: tables,
     );
-    data = data.sublist(6);
+    final zigzag = zigzags[data[6]];
+    data = data.sublist(7);
 
     ByteOutputStorage compressed;
     ByteOutputStorage decompressed;
@@ -91,7 +93,8 @@ class JpgDecompressor {
               j = 0;
             }
           }
-          table[i][j] = readCoefficient(bin, len);
+          final z = zigzag[i * 8 + j - 1];
+          table[z ~/ 8][z % 8] = readCoefficient(bin, len);
           j++;
           if (j == 8) {
             i++;
@@ -131,7 +134,7 @@ class JpgDecompressor {
   }
 }
 
-Future<Uint8List> launchDecompression(String compressedJpgPath) async {
+Future<Uint8List> launchDecompression(String compressedJpgPath, String? customJpgFileName) async {
   final compressedData = loadCompressedJpg(compressedJpgPath);
   File(compressedJpgPath).delete();
   final jpgData = JpgDecompressor.decompress(compressedData);
@@ -147,7 +150,7 @@ Future<Uint8List> launchDecompression(String compressedJpgPath) async {
     'bin/jpg_encoder.exe',
     [
       jpgTableFileName,
-      jpgFileName,
+      customJpgFileName ?? jpgFileName,
       jpgData.width.toString(),
       jpgData.height.toString(),
       jpgData.comp.toString(),
@@ -155,13 +158,13 @@ Future<Uint8List> launchDecompression(String compressedJpgPath) async {
     ],
   );
   File(jpgTableFileName).delete();
-  return File(jpgFileName).readAsBytesSync();
+  return File(customJpgFileName ?? jpgFileName).readAsBytesSync();
 }
 
 Future<void> main(List<String> args) async {
   if (args.length > 0) {
     final compressedJpgPath = args[0];
-    await launchDecompression(compressedJpgPath);
+    await launchDecompression(compressedJpgPath, args.length > 1 ? args[1] : null);
   } else {
     print('Please, specify input file name containing compressed JPG file');
   }

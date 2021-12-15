@@ -29,10 +29,13 @@ bin\test <path to output CSV file>
 ## Запуск деархиватора
 ```
 # Command structure
-> bin\jpg_decompressor <path to compressed JPEG file>
+> bin\jpg_decompressor <path to compressed JPEG file> [path to output decompressed JPEG file]
 
-# Example
+# Example 1
 > bin\jpg_decompressor fruits80.jpg_compressed
+
+# Example 2
+> bin\jpg_decompressor fruits80.jpg_compressed ~fruits80.jpg
 ``` 
 
 ## Запуск тестового стенда

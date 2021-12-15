@@ -7,6 +7,7 @@ class ProcessedJpgData {
   final Uint8List acRunLength;
   final Uint8List binaryAcDc;
   final JpgData initialData;
+  final int zigzagNumber;
 
   ProcessedJpgData(
     this.rawDcLength,
@@ -15,6 +16,7 @@ class ProcessedJpgData {
     this.acRunLength,
     this.binaryAcDc,
     this.initialData,
+    this.zigzagNumber,
   );
 
   Uint8List serialize() {
@@ -26,6 +28,7 @@ class ProcessedJpgData {
         initialData.height % 256,
         initialData.comp,
         initialData.qualityFactor,
+        zigzagNumber,
         ...dcLength.toList(),
         ...acRunLength.toList(),
         ...binaryAcDc.toList(),
